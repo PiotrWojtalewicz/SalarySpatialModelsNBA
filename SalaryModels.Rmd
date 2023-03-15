@@ -1,0 +1,515 @@
+---
+title: "Salary Spatial Models NBA"
+author: "Piotr Wojtalewicz"
+date: "2023-03-15"
+output: html_document
+---
+
+---
+title: "Salary_in_American_sports"
+author: "Piotr Wojtalewicz"
+date: '2022-10-18'
+output: html_document
+---
+
+
+
+
+
+
+```{r}
+library(tidyverse)
+library(stringr)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(modelr)
+library(PerformanceAnalytics)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+MLS_Salary_20222023 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/Rozdział_2/23/MLS_salary_2223.csv", sep = ";")
+```
+
+```{r}
+NBA_Salary_20222023 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20222023.csv", sep = ";")
+NBA_Salary_20212022 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20212022.csv", sep = ";")
+```
+
+```{r}
+NBA_Salary_20172018 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20172018.csv", sep = ";", dec = ",")
+
+```
+
+```{r}
+NBA_Total_Statistic_20172018 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20172018.csv", sep = ";", dec = ",")
+```
+
+```{r}
+NBA_Total_Statistic_20172018 <- rename(NBA_Total_Statistic_20172018, NAME = Player)
+```
+
+```{r}
+First_Left_Join <- left_join(NBA_Salary_20172018,NBA_Total_Statistic_20172018, by = "NAME")
+```
+
+```{r}
+First_Right_Join <- right_join(NBA_Salary_20172018,NBA_Total_Statistic_20172018, by = "NAME")
+
+```
+
+
+
+
+
+```{r}
+NBA_Salary_20182019 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20182019.csv", sep = ";")
+NBA_Total_Statistic_20182019 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20182019.csv", sep = ";", dec = ",")
+
+```
+
+```{r}
+NBA_Total_Statistic_20182019 <- rename(NBA_Total_Statistic_20182019, NAME = Player)
+```
+
+```{r}
+statistics_salary_20182019 <- right_join(NBA_Salary_20182019, NBA_Total_Statistic_20182019, by="NAME")
+```
+
+
+
+### Load data with salary in NBA
+
+```{r}
+NFL <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NFL_salary_20222023.csv", sep = ";")
+```
+
+### Load data with salary in NFL
+
+```{r}
+NHL <- read_csv2("C:/Users/piotr/OneDrive/Pulpit/salary/NHL_salary_20222023.csv")
+NHL$NAME<-gsub("\xa0", "", NHL$NAME)
+```
+
+### Load data with salary in NHL
+
+```{r}
+NBA_player_statistics20212022<- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20212022.csv", sep = ";")
+NBA_player_statistics20202021<- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20202021.csv", sep = ";")
+```
+
+### Load date with personal statistics in 2021/2022 season
+
+```{r}
+NBA_team_statistics20212022 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_team_statistics_20212022.csv", sep = ";")
+```
+
+### Load date with team statistics in 2021/2022 season
+
+```{r}
+NBA_value_teams <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_value_team_20212022.csv", sep = ";")
+```
+
+### load date with value of NBA teams in bilions dollars
+
+```{r}
+NHL_value_teams <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NHL_value_team_20212022.csv", sep = ";")
+```
+
+### load date with value of NHL teams in bilions dollars
+
+```{r}
+NFL_value_teams <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NFL_team_value.csv", sep = ";")
+```
+
+### load date with value of NFL teams in bilions dollars
+
+```{r}
+NBA_Salary_20222023 <- rename(NBA_Salary_20222023, INDEX = RK)
+NBA_Salary_20212022 <- rename(NBA_Salary_20212022, INDEX = RK)
+NFL<- rename(NFL, INDEX = RK)
+NHL<- rename(NHL, INDEX = RK)
+
+```
+
+```{r}
+NBA_Salary_20222023 <- NBA_Salary_20222023 %>% mutate(Salary1000 = SALARY/1000)
+NBA_Salary_20212022 <- NBA_Salary_20212022 %>% mutate(Salary1000 = SALARY/1000)
+NFL <- NFL%>% mutate(Salary1000 = SALARY/1000)
+NHL <- NHL%>% mutate(Salary1000 = SALARY/1000)
+MLS_Salary_20222023 <- MLS_Salary_20222023 %>% mutate(Salary1000 = Salary/1000)
+```
+
+```{r}
+NBA_Salary_20222023 %>% summarise(mean_salary1000 = mean(Salary1000), sd_salary1000 = sqrt(var(Salary1000)), median_salary1000= median(Salary1000), min_salary1000 = min(Salary1000), max_salary1000 = max(Salary1000))
+
+summary(NBA_Salary_20222023$Salary1000)
+
+NBA_Salary_20212022 %>% summarise(mean_salary1000 = mean(Salary1000), sd_salary1000 = sqrt(var(Salary1000)), median_salary1000= median(Salary1000), min_salary1000 = min(Salary1000), max_salary1000 = max(Salary1000))
+
+
+NHL %>% summarise(mean_salary1000 = mean(Salary1000), sd_salary1000 = sqrt(var(Salary1000)), median_salary1000= median(Salary1000), min_salary1000 = min(Salary1000), max_salary1000 = max(Salary1000))
+
+NFL %>% summarise(mean_salary1000 = mean(Salary1000), sd_salary1000 = sqrt(var(Salary1000)), median_salary1000= median(Salary1000), min_salary1000 = min(Salary1000), max_salary1000 = max(Salary1000))
+
+
+  
+```
+
+```{r}
+ggplot(NBA_Salary_20222023, aes(x = SALARY/1000))+ geom_histogram(binwidth = 2000, color="black", fill = "green") +
+scale_x_continuous(name = "Salary NBA players", breaks= seq(0,50000,5000)) + ggtitle("Plot of salary in NBA") + theme_dark()+ 
+scale_y_continuous(name = "Count of NBA players")
+
+ggplot(NBA_Salary_20212022, aes(x = SALARY/1000))+ geom_histogram(binwidth = 2000, color="black", fill = "green") +
+scale_x_continuous(name = "Salary NBA players", breaks= seq(0,50000,5000)) + ggtitle("Plot of salary in NBA") + theme_dark()+ 
+scale_y_continuous(name = "Count of NBA players")
+
+ggplot(NHL, aes(x = SALARY/1000))+ geom_histogram(binwidth = 1000, color="black", fill = "blue") +
+scale_x_continuous(name = "Salary NHL players", breaks= seq(0,15000,2000)) + ggtitle("Plot of salary in NHL") + theme_dark()+ 
+scale_y_continuous(name = "Count of NHL players") 
+ggplot(NFL, aes(x = SALARY/1000))+ geom_histogram(binwidth = 5000, color="black", fill = "red") +
+scale_x_continuous(name = "Salary NFL players", breaks= seq(0,230000,20000)) + ggtitle("Plot of salary in NFL") + theme_dark()+ 
+scale_y_continuous(name = "Count of NFL players")
+
+
+```
+
+
+```{r}
+NBA_plot1<-ggplot(NBA_Salary_20222023, aes(x = INDEX, y = Salary1000))+stat_smooth(size = 3)+ geom_point()
+NBA_plot1 +theme_bw() +theme(legend.position = "none") + theme(text=element_text(size=15)) + ggtitle("Salary in thousands of dollars (2022/2023)")
+
+NBA_plot1<-ggplot(NBA_Salary_20212022, aes(x = INDEX, y = Salary1000))+stat_smooth(size = 3)+ geom_point()
+NBA_plot1 +theme_bw() +theme(legend.position = "none") + theme(text=element_text(size=15)) + ggtitle("Salary in thousands of dollars (2021/2022)")
+
+```
+
+
+```{r}
+Atlanta_Hawks <- filter(NBA_Salary_20222023,TEAM== "Atlanta Hawks")
+ggplot(Atlanta_Hawks, aes(x= Salary1000, y = NAME, shape = POSITION )) + geom_point() + labs (
+title ="Salary players in Atlanta Hawks", 
+subtitle = "(2022-2023)",
+caption = "Data from ESPN webside")
+
+Boston_Celtics <- filter(NBA_Salary_20222023,TEAM== "Boston Celtics")
+ggplot(Boston_Celtics, aes(x= Salary1000, y = NAME, shape = POSITION )) + geom_point() + labs (
+title ="Salary players in Boston Celtics", 
+subtitle = "(2022-2023)",
+caption = "Data from ESPN webside")
+
+Brooklyn_Nets <- filter(NBA_Salary_20222023, TEAM == "Brooklyn Nets")
+ggplot(Brooklyn_Nets, aes(x = Salary1000, y = NAME, shape = POSITION))+ geom_point()+ labs( 
+title = ("Salary players in Brooklyn Nets "),
+subtitle = "(2022-2023)",
+caption = "Data from ESPN webside")
+
+	
+Charlotte_Hornets <- filter(NBA_Salary_20222023,TEAM== "Charlotte Hornets")
+ggplot(Charlotte_Hornets, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Charlotte Hornets")
+
+Chicago_Bulls <- filter(NBA_Salary_20222023,TEAM== "Chicago Bulls")
+ggplot(Chicago_Bulls, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Chicago Bulls")
+
+Cleveland_Cavaliers <- filter(NBA_Salary_20222023,TEAM== "Cleveland Cavaliers")
+ggplot(Cleveland_Cavaliers, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Cleveland Cavaliers")
+
+Dallas_Maverics <- filter(NBA_Salary_20222023,TEAM== "Dallas Mavericks")
+ggplot(Dallas_Maverics, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Dallas Mavericks")
+
+Denver_Nuggets <- filter(NBA_Salary_20222023,TEAM== "Denver Nuggets")
+ggplot(Denver_Nuggets, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Denver Nuggets")
+
+Charlotte_Hornets <- filter(NBA_Salary_20222023,TEAM== "Charlotte Hornets")
+ggplot(Charlotte_Hornets, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Charlotte Hornets")
+
+Detroit_Pistons <- filter(NBA_Salary_20222023,TEAM== "Detroit Pistons")
+ggplot(Detroit_Pistons, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Detroit Pistons")
+
+Golden_State_Warriors <- filter(NBA_Salary_20222023,TEAM== "Golden State Warriors")
+ggplot(Golden_State_Warriors, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Golden State Warriors")
+
+Houston_Rockets<- filter(NBA_Salary_20222023,TEAM== "Houston Rockets")
+ggplot(Houston_Rockets, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Houston Rockets")
+
+Indiana_Pacers <- filter(NBA_Salary_20222023,TEAM== "Indiana Pacers")
+ggplot(Indiana_Pacers, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Indiana Pacers")
+
+LA_Clippers <- filter(NBA_Salary_20222023,TEAM== "LA Clippers")
+ggplot(LA_Clippers, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in 	LA Clippers")
+
+Los_Angeles_Lakers <- filter(NBA_Salary_20222023,TEAM== "Los Angeles Lakers")
+ggplot(Los_Angeles_Lakers, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Los Angeles Lakers")
+
+	
+Memphis_Grizzlies <- filter(NBA_Salary_20222023,TEAM== "	Memphis Grizzlies")
+ggplot(Memphis_Grizzlies, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Memphis Grizzlies")
+
+Miami_Heat<- filter(NBA_Salary_20222023,TEAM== "Miami Heat")
+ggplot(Miami_Heat, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Miami Heat")
+
+	
+Milwaukee_Bucks <- filter(NBA_Salary_20222023,TEAM== "Milwaukee Bucks")
+ggplot(Milwaukee_Bucks, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in 
+Milwaukee Bucks")
+
+Minnesota_Timberwolves <- filter(NBA_Salary_20222023,TEAM== "Minnesota Timberwolves")
+ggplot(Minnesota_Timberwolves, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Minnesota Timberwolves")
+
+New_Orleans_Pelicans <- filter(NBA_Salary_20222023,TEAM== "New Orleans Pelicans")
+ggplot(New_Orleans_Pelicans, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in 	New Orleans Pelicans")
+
+New_York_Knicks <- filter(NBA_Salary_20222023,TEAM== "New York Knicks")
+ggplot(New_York_Knicks, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in New York Knicks")
+
+Oklahoma_City_Thunder <- filter(NBA_Salary_20222023,TEAM== "Oklahoma City Thunder")
+ggplot(Oklahoma_City_Thunder, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Oklahoma City Thunder")
+
+Orlando_Magic <- filter(NBA_Salary_20222023,TEAM== "Orlando Magic")
+ggplot(Orlando_Magic, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Orlando Magic")
+
+Philadelphia_76ers <- filter(NBA_Salary_20222023,TEAM== "Philadelphia 76ers")
+ggplot(Philadelphia_76ers, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Philadelphia 76ers")
+
+Phoenix_Suns <- filter(NBA_Salary_20222023,TEAM== "Phoenix Suns")
+ggplot(Phoenix_Suns, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Phoenix Suns")
+
+Portland_Trail_Blazers <- filter(NBA_Salary_20222023,TEAM== "Portland Trail Blazers")
+ggplot(Portland_Trail_Blazers, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Portland Trail Blazers")
+
+Sacramento_Kings <- filter(NBA_Salary_20222023,TEAM== "Sacramento Kings")
+ggplot(Sacramento_Kings, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Sacramento Kings")
+
+San_Antonio_Spurs <- filter(NBA_Salary_20222023,TEAM== "San Antonio Spurs")
+ggplot(San_Antonio_Spurs, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in San Antonio Spurs")
+
+Toronto_Raptors <- filter(NBA_Salary_20222023,TEAM== "Toronto Raptors")
+ggplot(Toronto_Raptors, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Toronto Raptors")
+
+Utah_Jazz <- filter(NBA_Salary_20222023,TEAM== "Utah Jazz")
+ggplot(Utah_Jazz, aes(x = Salary1000,y=NAME, shape= POSITION)) + geom_point() + labs (title = "Salary players in Utah Jazz")
+
+Washington_Wizards <- filter(NBA_Salary_20222023,TEAM== "Washington Wizards")
+ggplot(Washington_Wizards, aes(x = Salary1000,y=NAME, color= POSITION)) + geom_point() + labs (title = "Salary players in Washington Wizards")
+
+```
+
+
+
+```{r}
+Northwest_Salary_20222023 <- filter(NBA_Salary_20222023, TEAM == "Portland Trail Blazers" |  TEAM == "Utah Jazz"|  TEAM =="Denver Nuggets" |  TEAM =="Minnesota Timberwolves" |  TEAM =="Oklahoma City Thunder")
+Southwest_Salary_20222023 <- filter(NBA_Salary_20222023, TEAM == "Dallas Mavericks" | TEAM == "Houston Rockets"| TEAM == "San Antonio Spurs"| TEAM == "Memphis Grizzlies")
+Paciffic_Salary_20222023 <- filter(NBA_Salary_20222023, TEAM == "Phoenix Suns"| TEAM == "Golden State Warriors" | TEAM == "LA Clippers" | TEAM == "Los Angeles Lakers" | TEAM == "Sacramento Kings")
+```
+#podział na diwizje
+
+
+
+```{r}
+ggplot(Northwest_Salary_20222023, aes(x=Salary1000 , y= INDEX)) +geom_point() + facet_wrap(~TEAM)
+ggplot(Southwest_Salary_20222023, aes(x=Salary1000 , y= INDEX)) +geom_point() + facet_wrap(~TEAM)
+ggplot(Paciffic_Salary_20222023, aes(x=Salary1000 , y= INDEX)) +geom_point() + facet_wrap(~TEAM)
+
+```
+
+```{r}
+Atlantic_Salary_20222023 <- filter(NBA_Salary_20222023, TEAM == "Boston Celtics"|  TEAM == "Brooklyn Nets"|  TEAM =="New York Knicks" |  TEAM =="Philadelphia 76ers" |  TEAM =="Toronto Raptors")
+Southeast_Salary_20222023 <- filter(NBA_Salary_20222023, TEAM == "Orlando Magic"| TEAM == "Miami Heat"| TEAM == "Atlanta Hawks"| TEAM == "Charlotte Hornets"| TEAM == "Washington Wizards")
+Central_Salary_20222023 <- filter(NBA_Salary_20222023, TEAM == "Milwaukee Bucks"| TEAM == "Indiana Pacers"| TEAM == "Chicago Bulls"| TEAM == "Cleveland Cavaliers"| TEAM == "Detroit Pistons")
+```
+
+
+
+```{r}
+Northwest_Salary_20222023 %>% filter(POSITION == "PG")
+Paciffic_Salary_20222023
+Paciffic_Salary_20222023 %>% filter(POSITION == "PG")
+Southwest_Salary_20222023  %>% filter(POSITION == "PG")
+
+Atlantic_Salary_20222023 %>% filter(POSITION == "SG")
+Southwest_Salary_20222023  %>% filter(POSITION == "SG")
+Paciffic_Salary_20222023 %>% filter(POSITION == "SF")
+
+Atlantic_Salary_20222023 %>% filter(POSITION == "SF")
+Central_Salary_20222023 %>% filter(POSITION == "PF")
+Northwest_Salary_20222023 %>% filter(POSITION == "PF")
+
+Northwest_Salary_20222023 %>% filter(POSITION == "C")
+
+Southwest_Salary_20222023  %>% filter(POSITION == "C")
+```
+
+
+
+```{r}
+ggplot(Atlantic_Salary_20222023, aes(x=Salary1000 , y= INDEX)) +geom_point() + facet_wrap(~TEAM)
+ggplot(Southeast_Salary_20222023, aes(x=Salary1000 , y= INDEX)) +geom_point() + facet_wrap(~TEAM)
+ggplot(Central_Salary_20222023, aes(x=Salary1000 , y= INDEX)) +geom_point() + facet_wrap(~TEAM)
+
+```
+
+
+
+```{r}
+plot(Washington_Wizards$INDEX,Washington_Wizards$Salary1000)
+plot(Utah_Jazz$INDEX,Utah_Jazz$Salary1000)
+
+
+```
+
+
+
+```{r}
+Atalanta_Hawks_sum<- sum(Atlanta_Hawks$Salary1000)
+
+```
+
+```{r}
+NBA_Salary_20212022 %>% group_by(TEAM) %>%
+  summarise(sum = sum(Salary1000))  
+```
+
+
+
+
+
+# drugi podpunkt drugiego rozdziału
+
+
+```{r}
+PG_Positions_Salary_20222023 <- NBA_Salary_20222023 %>% filter(POSITION == "PG") 
+SG_Positions_Salary_20222023 <- NBA_Salary_20222023 %>% filter(POSITION == "SG") 
+SF_Positions_Salary_20222023 <- NBA_Salary_20222023 %>% filter(POSITION == "SF") 
+PF_Positions_Salary_20222023 <- NBA_Salary_20222023 %>% filter(POSITION == "PF") 
+C_Positions_Salary_20222023 <- NBA_Salary_20222023 %>% filter(POSITION == "C") 
+```
+
+```{r}
+ PG_Positions_Salary_20222023 <- PG_Positions_Salary_20222023 %>% mutate(Salary1000 = SALARY/1000)
+ SG_Positions_Salary_20222023 <- SG_Positions_Salary_20222023 %>% mutate(Salary1000 = SALARY/1000)
+ SF_Positions_Salary_20222023 <- SF_Positions_Salary_20222023 %>% mutate(Salary1000 = SALARY/1000)
+ PF_Positions_Salary_20222023 <- PF_Positions_Salary_20222023 %>% mutate(Salary1000 = SALARY/1000)
+ C_Positions_Salary_20222023 <- C_Positions_Salary_20222023 %>% mutate(Salary1000 = SALARY/1000)
+
+```
+
+
+
+```{r}
+summary(PG_Positions_Salary_20222023$Salary1000)
+summary(SG_Positions_Salary_20222023$Salary1000)
+summary(SF_Positions_Salary_20222023$Salary1000)
+summary(PF_Positions_Salary_20222023$Salary1000)
+summary(C_Positions_Salary_20222023$Salary1000)
+```
+
+```{r}
+
+a<-PG_Positions_Salary_20222023 %>% group_by(TEAM) %>% summarise(sum(Salary1000))
+b<-SG_Positions_Salary_20222023 %>% group_by(TEAM) %>% summarise(sum(Salary1000))
+c<-SF_Positions_Salary_20222023 %>% group_by(TEAM) %>% summarise(sum(Salary1000))
+d<-PF_Positions_Salary_20222023 %>% group_by(TEAM) %>% summarise(sum(Salary1000))
+e<-C_Positions_Salary_20222023%>% group_by(TEAM) %>% summarise(sum(Salary1000))
+
+a
+b
+c
+d
+e
+
+
+```
+
+
+```{r}
+PG_Positions_Salary_20222023 %>% group_by(TEAM) %>% summarise(mean(Salary1000))
+SG_Positions_Salary_20222023 %>% group_by(TEAM) %>% summarise(mean(Salary1000))
+SF_Positions_Salary_20222023 %>% group_by(TEAM) %>% summarise(mean(Salary1000))
+PF_Positions_Salary_20222023 %>% group_by(TEAM) %>% summarise(mean(Salary1000))
+C_Positions_Salary_20222023 %>% group_by(TEAM) %>% summarise(mean(Salary1000))
+
+```
+
+
+```{r}
+PG_Positions_Salary_20222023 %>% group_by(TEAM) %>% count(TEAM)
+SG_Positions_Salary_20222023 %>% group_by(TEAM) %>%count(TEAM)
+SF_Positions_Salary_20222023 %>% group_by(TEAM) %>% count(TEAM)
+PF_Positions_Salary_20222023 %>% group_by(TEAM) %>% count(TEAM)
+C_Positions_Salary_20222023 %>% group_by(TEAM) %>%count(TEAM)
+```
+
+
+#2.3
+
+```{r}
+summary(NHL)
+```
+
+
+## skośność 
+```{r}
+NBA_skew <- skewness(NBA_Salary_20222023$SALARY)
+NBA_skew
+```
+```{r}
+NBA_skewness_plot <- NBA_Salary_20222023 %>% 
+  ggplot(aes(x = Salary1000)) + stat_density(geom = "line", alpha = 1, colour = "cornflowerblue")
+NBA_skewness_plot + ggtitle("Skośność wynagrodzeń w NBA")
+```
+
+
+```{r}
+NHL_skew <- skewness(NHL$SALARY)
+NHL_skew
+
+NHL_skewness_plot <- NHL %>% 
+  ggplot(aes(x = Salary1000)) + stat_count(geom = "line", alpha = 1, colour = "cornflowerblue")
+NHL_skewness_plot + ggtitle("Skośność wynagrodzeń w NHL")
+```
+
+
+```{r}
+NFL_skew <- skewness(NFL$SALARY)
+NFL_skew
+
+NFL_skewness_plot <- NFL %>% 
+  ggplot(aes(x = Salary1000)) + stat_density(geom = "line", alpha = 1, colour = "cornflowerblue")
+NFL_skewness_plot + ggtitle("Skośność wynagrodzeń w NFL")
+
+```
+```{r}
+MLS_skew <- skewness(MLS_Salary_20222023$Salary1000)
+MLS_skew
+
+MLS_skewness_plot <- MLS_Salary_20222023 %>% 
+  ggplot(aes(x =Salary1000 )) + stat_density(geom = "line", alpha = 1, colour = "cornflowerblue")
+MLS_skewness_plot + ggtitle("Skośność wynagrodzeń w MLS")
+```
+
+
+
+```{r}
+hist_NBA<- NBA_Salary_20222023$Salary1000
+hist(hist_NBA, main = "Diagram skośności w NBA", xlab = "Wynagrodzenia w 1000$", ylab = "Ilość zawodników")
+hist_NFL<- NFL$Salary1000
+hist(hist_NFL, main = "Diagram skośności w NFL", xlab = "Wynagrodzenia w 1000$", ylab = "Ilość zawodników")
+hist_NHL<- NHL$Salary1000
+hist(hist_NHL, main = "Diagram skośności w NHL", xlab = "Wynagrodzenia w 1000$", ylab = "Ilość zawodników")
+hist_MLS<- MLS_Salary_20222023$Salary1000
+hist(hist_MLS, main = "Diagram skośności w MLS", xlab = "Wynagrodzenia w 1000$", ylab = "Ilość zawodników")
+
+
+```
+
+```{r}
+hist_NFL<- NFL$Salary1000
+hist(hist_NFL, main = "Diagram skośności w NFL", xlab = "Wynagrodzenia w 1000$", ylab = "Ilość zawodników")
+
+```
