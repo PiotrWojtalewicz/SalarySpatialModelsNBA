@@ -508,8 +508,3 @@ hist(hist_MLS, main = "Diagram skośności w MLS", xlab = "Wynagrodzenia w 1000$
 
 ```
 
-```{r}
-hist_NFL<- NFL$Salary1000
-hist(hist_NFL, main = "Diagram skośności w NFL", xlab = "Wynagrodzenia w 1000$", ylab = "Ilość zawodników")
-
-```
