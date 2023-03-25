@@ -38,34 +38,107 @@ MLS_Salary_20222023 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/Rozdział_2/23/M
 
 ```{r}
 NBA_Salary_20222023 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20222023.csv", sep = ";")
-NBA_Salary_20212022 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20212022.csv", sep = ";")
+```
+
+
+
+```{r}
+NBA_Salary_2003_04 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20032004.csv",sep = ";", dec = ",")
+NBA_Salary_2004_05 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20042005.csv",sep = ";", dec = ",")
+NBA_Salary_2005_06 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20052006.csv",sep = ";", dec = ",")
+NBA_Salary_2006_07 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20062007.csv",sep = ";", dec = ",")
+NBA_Salary_2007_08 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20072008.csv",sep = ";", dec = ",")
+NBA_Salary_2008_09 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20082009.csv",sep = ";", dec = ",")
+NBA_Salary_2009_10 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20092010.csv",sep = ";", dec = ",")
+NBA_Salary_2010_11 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20102011.csv",sep = ";", dec = ",")
+NBA_Salary_2011_12 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20112012.csv",sep = ";", dec = ",")
+NBA_Salary_2012_13 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20122013.csv",sep = ";", dec = ",")
+NBA_Salary_2013_14 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20132014.csv",sep = ";", dec = ",")
+NBA_Salary_2014_15 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20142015.csv",sep = ";", dec = ",")
+NBA_Salary_2015_16 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20152016.csv",sep = ";", dec = ",")
+NBA_Salary_2016_17 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20162017.csv",sep = ";", dec = ",")
+NBA_Salary_2017_18 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20172018.csv",sep = ";", dec = ",")
+NBA_Salary_2018_19 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20182019.csv",sep = ";", dec = ",")
+NBA_Salary_2019_20 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20192020.csv",sep = ";", dec = ",")
+NBA_Salary_2020_21 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20202021.csv",sep = ";", dec = ",")
+NBA_Salary_2021_22 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20212022.csv",sep = ";", dec = ",")
+
 ```
 
 ```{r}
-NBA_Salary_20172018 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20172018.csv", sep = ";", dec = ",")
+NBA_player_statistics2003_04 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20032004.csv",sep = ";", dec = ",")
+NBA_player_statistics2004_05 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20042005.csv",sep = ";", dec = ",")
+NBA_player_statistics2005_06 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20052006.csv",sep = ";", dec = ",")
+NBA_player_statistics2006_07 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20062007.csv",sep = ";", dec = ",")
+NBA_player_statistics2007_08 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20072008.csv",sep = ";", dec = ",")
+NBA_player_statistics2008_09 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20082009.csv",sep = ";", dec = ",")
+NBA_player_statistics2009_10 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20092010.csv",sep = ";", dec = ",")
+NBA_player_statistics2010_11 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20102011.csv",sep = ";", dec = ",")
+NBA_player_statistics2011_12 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20112012.csv",sep = ";", dec = ",")
+NBA_player_statistics2012_13 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20122013.csv",sep = ";", dec = ",")
+NBA_player_statistics2013_14 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20132014.csv",sep = ";", dec = ",")
+NBA_player_statistics2014_15 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20142015.csv",sep = ";", dec = ",")
+NBA_player_statistics2015_16 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20152016.csv",sep = ";", dec = ",")
+NBA_player_statistics2016_17 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20162017.csv",sep = ";", dec = ",")
+NBA_player_statistics2017_18 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20172018.csv",sep = ";", dec = ",")
+NBA_player_statistics2018_19 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20182019.csv",sep = ";", dec = ",")
+NBA_player_statistics2019_20 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20192020.csv",sep = ";", dec = ",")
+NBA_player_statistics2020_21 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20202021.csv",sep = ";", dec = ",")
+NBA_player_statistics2021_22 <-read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20212022.csv",sep = ";", dec = ",")
 
+```
+
+
+```{r}
+NBA_player_statistics2003_04<- rename(NBA_player_statistics2003_04, NAME = Player)
+NBA_player_statistics2004_05<- rename(NBA_player_statistics2004_05, NAME = Player)
+NBA_player_statistics2005_06<- rename(NBA_player_statistics2005_06, NAME = Player)
+NBA_player_statistics2006_07<- rename(NBA_player_statistics2006_07, NAME = Player)
+NBA_player_statistics2007_08<- rename(NBA_player_statistics2007_08, NAME = Player)
+NBA_player_statistics2008_09<- rename(NBA_player_statistics2008_09, NAME = Player)
+NBA_player_statistics2009_10<- rename(NBA_player_statistics2009_10, NAME = Player)
+NBA_player_statistics2010_11<- rename(NBA_player_statistics2010_11, NAME = Player)
+NBA_player_statistics2011_12<- rename(NBA_player_statistics2011_12, NAME = Player)
+NBA_player_statistics2012_13<- rename(NBA_player_statistics2012_13, NAME = Player)
+NBA_player_statistics2013_14<- rename(NBA_player_statistics2013_14, NAME = Player)
+NBA_player_statistics2014_15<- rename(NBA_player_statistics2014_15, NAME = Player)
+NBA_player_statistics2015_16<- rename(NBA_player_statistics2015_16, NAME = Player)
+NBA_player_statistics2016_17<- rename(NBA_player_statistics2016_17, NAME = Player)
+NBA_player_statistics2017_18<- rename(NBA_player_statistics2017_18, NAME = Player)
+NBA_player_statistics2018_19<- rename(NBA_player_statistics2018_19, NAME = Player)
+NBA_player_statistics2019_20<- rename(NBA_player_statistics2019_20, NAME = Player)
+NBA_player_statistics2020_21<- rename(NBA_player_statistics2020_21, NAME = Player)
+NBA_player_statistics2021_22<- rename(NBA_player_statistics2021_22, NAME = PLAYER)
 ```
 
 ```{r}
-NBA_Total_Statistic_20172018 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_total_statistic_20172018.csv", sep = ";", dec = ",")
+NBA_player_statistics2019_20
+NBA_player_statistics2020_21
+NBA_player_statistics2021_22
 ```
+
 
 ```{r}
-NBA_Total_Statistic_20172018 <- rename(NBA_Total_Statistic_20172018, NAME = Player)
+NBA_2003_04 <- right_join(NBA_Salary_2003_04, NBA_player_statistics2003_04, by = "NAME")
+NBA_2004_05 <- right_join(NBA_Salary_2004_05, NBA_player_statistics2004_05, by = "NAME")
+NBA_2005_06 <- right_join(NBA_Salary_2005_06, NBA_player_statistics2005_06, by = "NAME")
+NBA_2006_07 <- right_join(NBA_Salary_2006_07, NBA_player_statistics2006_07, by = "NAME")
+NBA_2007_08 <- right_join(NBA_Salary_2007_08, NBA_player_statistics2007_08, by = "NAME")
+NBA_2008_09 <- right_join(NBA_Salary_2008_09, NBA_player_statistics2008_09, by = "NAME")
+NBA_2009_10 <- right_join(NBA_Salary_2009_10, NBA_player_statistics2009_10, by = "NAME")
+NBA_2010_11 <- right_join(NBA_Salary_2010_11, NBA_player_statistics2010_11, by = "NAME")
+NBA_2011_12 <- right_join(NBA_Salary_2011_12, NBA_player_statistics2011_12, by = "NAME")
+NBA_2012_13 <- right_join(NBA_Salary_2012_13, NBA_player_statistics2012_13, by = "NAME")
+NBA_2013_14 <- right_join(NBA_Salary_2013_14, NBA_player_statistics2013_14, by = "NAME")
+NBA_2014_15 <- right_join(NBA_Salary_2014_15, NBA_player_statistics2014_15, by = "NAME")
+NBA_2015_16 <- right_join(NBA_Salary_2015_16, NBA_player_statistics2015_16, by = "NAME")
+NBA_2016_17 <- right_join(NBA_Salary_2016_17, NBA_player_statistics2016_17, by = "NAME")
+NBA_2017_18 <- right_join(NBA_Salary_2017_18, NBA_player_statistics2017_18, by = "NAME")
+NBA_2018_19 <- right_join(NBA_Salary_2018_19, NBA_player_statistics2018_19, by = "NAME")
+NBA_2019_20 <- right_join(NBA_Salary_2019_20, NBA_player_statistics2019_20, by = "NAME")
+NBA_2020_21 <- right_join(NBA_Salary_2020_21, NBA_player_statistics2020_21, by = "NAME")
+NBA_2021_22 <- right_join(NBA_Salary_2021_22, NBA_player_statistics2021_22, by = "NAME")
 ```
-
-```{r}
-First_Left_Join <- left_join(NBA_Salary_20172018,NBA_Total_Statistic_20172018, by = "NAME")
-```
-
-```{r}
-First_Right_Join <- right_join(NBA_Salary_20172018,NBA_Total_Statistic_20172018, by = "NAME")
-
-```
-
-
-
-
 
 ```{r}
 NBA_Salary_20182019 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20182019.csv", sep = ";")
@@ -76,11 +149,6 @@ NBA_Total_Statistic_20182019 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/
 ```{r}
 NBA_Total_Statistic_20182019 <- rename(NBA_Total_Statistic_20182019, NAME = Player)
 ```
-
-```{r}
-statistics_salary_20182019 <- right_join(NBA_Salary_20182019, NBA_Total_Statistic_20182019, by="NAME")
-```
-
 
 
 ### Load data with salary in NBA
@@ -458,6 +526,7 @@ summary(NHL)
 NBA_skew <- skewness(NBA_Salary_20222023$SALARY)
 NBA_skew
 ```
+
 ```{r}
 NBA_skewness_plot <- NBA_Salary_20222023 %>% 
   ggplot(aes(x = Salary1000)) + stat_density(geom = "line", alpha = 1, colour = "cornflowerblue")
