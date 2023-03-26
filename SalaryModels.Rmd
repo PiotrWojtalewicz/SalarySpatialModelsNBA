@@ -25,6 +25,7 @@ library(dplyr)
 library(ggplot2)
 library(modelr)
 library(PerformanceAnalytics)
+library(writexl)
 ```
 
 ```{r setup, include=FALSE}
@@ -139,6 +140,12 @@ NBA_2019_20 <- right_join(NBA_Salary_2019_20, NBA_player_statistics2019_20, by =
 NBA_2020_21 <- right_join(NBA_Salary_2020_21, NBA_player_statistics2020_21, by = "NAME")
 NBA_2021_22 <- right_join(NBA_Salary_2021_22, NBA_player_statistics2021_22, by = "NAME")
 ```
+
+
+```{r}
+Cross_Table2122<- NBA_2021_22 %>% summarize(group_by(TEAM))
+```
+
 
 ```{r}
 NBA_Salary_20182019 <- read.csv("C:/Users/piotr/OneDrive/Pulpit/salary/NBA_salary_20182019.csv", sep = ";")
@@ -576,4 +583,47 @@ hist(hist_MLS, main = "Diagram skośności w MLS", xlab = "Wynagrodzenia w 1000$
 
 
 ```
+
+###3.3.
+```{r}
+NBA_player_statistics2021_22
+```
+
+
+```{r}
+PG_Positions_Statistics_20212022 <- NBA_player_statistics2021_22 %>% filter(POSITION == "PG") 
+SG_Positions_Statistics_20212022 <- NBA_player_statistics2021_22 %>% filter(POSITION == "SG") 
+SF_Positions_Statistics_20212022 <- NBA_player_statistics2021_22 %>% filter(POSITION == "SF") 
+PF_Positions_Statistics_20212022 <- NBA_player_statistics2021_22 %>% filter(POSITION == "PF") 
+C_Positions_Statistics_20212022 <- NBA_player_statistics2021_22 %>% filter(POSITION == "C")
+```
+
+
+
+```{r}
+PG_Positions_Statistics_20212022 <- PG_Positions_Statistics_20212022 %>% group_by(TEAM)
+```
+
+```{r}
+SG_Positions_Statistics_20212022 <- SG_Positions_Statistics_20212022 %>% group_by(TEAM)
+SF_Positions_Statistics_20212022 <- SF_Positions_Statistics_20212022 %>% group_by(TEAM)
+PF_Positions_Statistics_20212022 <- PF_Positions_Statistics_20212022 %>% group_by(TEAM)
+C_Positions_Statistics_20212022 <- C_Positions_Statistics_20212022 %>% group_by(TEAM)
+```
+
+
+```{r}
+write_xlsx(PG_Positions_Statistics_20212022,"C:/Users/piotr/OneDrive/Pulpit/Rozdział_3/PG_Positions_Statistics_20212022.xlsx" )
+```
+
+```{r}
+write_xlsx(SG_Positions_Statistics_20212022,"C:/Users/piotr/OneDrive/Pulpit/Rozdział_3/SG_Positions_Statistics_20212022.xlsx" )
+write_xlsx(SF_Positions_Statistics_20212022,"C:/Users/piotr/OneDrive/Pulpit/Rozdział_3/SF_Positions_Statistics_20212022.xlsx" )
+write_xlsx(PF_Positions_Statistics_20212022,"C:/Users/piotr/OneDrive/Pulpit/Rozdział_3/PF_Positions_Statistics_20212022.xlsx" )
+write_xlsx(C_Positions_Statistics_20212022,"C:/Users/piotr/OneDrive/Pulpit/Rozdział_3/C_Positions_Statistics_20212022.xlsx" )
+```
+
+
+
+
 
