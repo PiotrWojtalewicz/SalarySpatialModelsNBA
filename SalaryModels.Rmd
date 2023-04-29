@@ -143,6 +143,12 @@ NBA_2019_20 <- right_join(NBA_Salary_2019_20, NBA_player_statistics2019_20, by =
 NBA_2020_21 <- right_join(NBA_Salary_2020_21, NBA_player_statistics2020_21, by = "NAME")
 ```
 
+
+```{r}
+Cross_Table2122<- NBA_2021_22 %>% summarize(group_by(TEAM))
+```
+
+
 ```{r}
 NBA2021_2022 <- left_join(NBA_Salary_20212022, NBA_player_statistics2021_22, by = "PLAYER") 
 ```
@@ -637,6 +643,7 @@ write_xlsx(C_Positions_Statistics_20212022,"C:/Users/piotr/OneDrive/Pulpit/Rozdz
 ```
 
 
+<<<<<<< HEAD
 ```{r}
 write_xlsx(NBA_2021_22,"C:/Users/piotr/OneDrive/Pulpit/Rozdział_3/3_1/NBA_2021_22.xlsx" )
 write_xlsx(NBA_2003_04,"C:/Users/piotr/OneDrive/Pulpit/Rozdział_3/3_1/NBA_2003_04.xlsx")
@@ -927,4 +934,8 @@ slmtest(rownanie1, data=panel, listw=macierz_q1_2, model="random",test=c("rlme")
 slmtest(rownanie1, data=panel, listw=macierz_q1_2, model="random",test=c("rlml"), index=NULL)
 ```
 
+
+```{r}
+getwd()
+```
 
