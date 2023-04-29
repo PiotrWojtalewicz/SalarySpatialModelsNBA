@@ -715,6 +715,10 @@ View(panel)
 ```{r}
 mapaUSA_shp<- st_read("C:/Users/piotr/OneDrive/Pulpit/SalarySpatialModelNBA/SalarySpatialModelsNBA/Stany_USA.shp")
 ```
+```{r}
+mapa2USA_shp<-st_read("C:/Users/piotr/OneDrive/Pulpit/SalarySpatialModelNBA/SalarySpatialModelsNBA/Stany2_USA.shp")
+```
+
 
 
 
@@ -726,11 +730,22 @@ View(sasiad_q1)
 ```
 
 ```{r}
+# macierz sasiedztwa I rzedu dla drugiej mapy
+sasiad_q1_2 = poly2nb (mapa2USA_shp , queen = T)
+View(sasiad_q1_2)
+```
+
+
+```{r}
 # macierz wag standaryzowana wierszami
 macierz_q1 = nb2listw (sasiad_q1 , style = "W" , zero.policy = TRUE)
 summary(macierz_q1, zero.policy = TRUE)
 ```
-
+```{r}
+# macierz wag standaryzowana wierszami dla drugiej mapy
+macierz_q1_2 = nb2listw (sasiad_q1_2 , style = "W" , zero.policy = TRUE)
+summary(macierz_q1_2, zero.policy = TRUE)
+```
 
 ```{r}
 # definiowanie rownania
@@ -751,14 +766,165 @@ rownanie1 = log(Wynagrodzenie) ~ log(Wszystkie_zbiorki) +  log(Asysty) + log(Pun
 ols = plm (rownanie1 , data = panel , model = "pooling" )
 summary(ols)
 ```
-```{r}
-tidy(summary(ols))
-```
-
 
 
 ```{r}
-ols1 = lm (rownanie1 , Wszystkie_dane )
+ols1 = lm (rownanie , Wszystkie_dane2 )
 summary(ols1)
 ```
+
+```{r}
+dane1 <- Wszystkie_dane2 %>%
+  filter(Sezon=="2003/04")
+dane2 <- Wszystkie_dane2 %>%
+  filter(Sezon=="2007/08")
+dane3 <- Wszystkie_dane2 %>%
+  filter(Sezon=="2011/12")
+dane4 <- Wszystkie_dane2 %>%
+  filter(Sezon=="2015/16")
+dane5 <- Wszystkie_dane2 %>%
+  filter(Sezon=="2021/22")
+```
+
+
+```{r}
+#sezon 2003/04
+ols1 = lm (rownanie1 , dane1 )
+summary(ols1)
+```
+```{r}
+#sezon 2007/08
+ols1 = lm (rownanie1 , dane2 )
+summary(ols1)
+```
+
+```{r}
+#sezon 2011/12
+ols1 = lm (rownanie1 , dane3 )
+summary(ols1)
+```
+
+  
+```{r}
+#sezon 2015/16
+ols1 = lm (rownanie1 , dane4 )
+summary(ols1)
+```
+
+
+```{r}
+#sezon 2021/22
+ols1 = lm (rownanie1 , dane5 )
+summary(ols1)
+```
+
+
+```{r}
+# Jednokierunkowy panelowy model z efektami stalymi (bez efektow przestrzennych)
+fe1 = plm (rownanie1 , data = panel , model = "within" , effect = "individual")
+summary(fe1)
+summary(fixef(fe1))
+pFtest(fe1, ols)
+```
+
+
+```{r}
+# Dwukierunkowy panelowy model z efektami stalymi (bez efektow przestrzennych)
+fe2 = plm (rownanie1 , data = panel , model = "within" , effect = "twoways")
+summary(fe2)
+summary(fixef(fe2, effect = "time"))
+pFtest(fe2, fe1)
+plmtest(fe1, c("time"), type=("bp"))
+```
+
+
+```{r}
+# Dwukierunkowy panelowy model z efektami losowymi (bez efektow przestrzennych)
+re2 = plm (rownanie1 , data = panel , model = "random", random.method = "nerlove" , effect = "twoways")
+summary(re2)
+plmtest(ols, type=c("bp"))
+```
+
+```{r}
+# Test Hausmana 
+phtest(re2, fe2)
+```
+
+
+
+#### Modele przestrzenne bez efektow specyficznych dla paneli ####
+
+```{r}
+# Model SAR
+sar = spml (rownanie1 , data = panel , listw = macierz_q1_2 , model = "pooling" , lag = TRUE , spatial.error = "none")
+summary(sar)
+```
+
+```{r}
+# Model SEM
+sem = spml (rownanie1 , data = panel , listw = macierz_q1_2 , model = "pooling" , lag = FALSE , spatial.error = "b")
+summary(sem)
+```
+#### Panelowe modele przestrzenne ####
+
+```{r}
+# Jednokierunkowy (one way) model przestrzennej autoregresji (SAR) z efektami stalymi (FE):
+sar_fe1  = spml (rownanie1 , data = panel , listw = macierz_q1_2 , model = "within" , effect = "individual" , lag = TRUE , spatial.error = "none")
+summary(sar_fe1)
+effects(sar_fe1)
+```
+
+```{r}
+# Dwukierunkowy (two way) model przestrzennej autoregresji (SAR) z efektami stalymi (FE):
+sar_fe2  = spml (rownanie1 , data = panel , listw = macierz_q1_2 , model = "within" , effect = "twoways" , lag = TRUE , spatial.error = "none")
+summary(sar_fe2)
+effects(sar_fe2)
+```
+
+```{r}
+#Jednokierunkowy (one way) model przestrzennej autoregresji (SAR) z efektami losowymi (RE):
+sar_re1  = spml (rownanie1 , data = panel , listw = macierz_q1_2 , model = "random" , effect = "individual" , lag = TRUE , spatial.error = "none")
+summary(sar_re1)
+```
+```{r}
+#Jednokierunkowy (one way) model przestrzennej autokorelacji (SEM) z efektami stalymi (FE):
+sem_fe1  = spml (rownanie1 , data = panel , listw = macierz_q1_2 , model = "within" , effect = "individual" , lag = FALSE , spatial.error = "b")
+summary(sem_fe1)
+effects(sem_fe1)
+```
+```{r}
+#Dwukierunkowy (one way) model przestrzennej autokorelacji (SEM) z efektami stalymi (FE):
+sem_fe2  = spml (rownanie1 , data = panel , listw = macierz_q1_2 , model = "within" , effect = "twoways" , lag = FALSE , spatial.error = "b")
+summary(sem_fe2)
+effects(sem_fe2)
+```
+
+```{r}
+# Jednokierunkowy (one way) model przestrzennej autokorelacji (SEM) z efektami losowymi (RE):
+sem_re1  = spml (rownanie1 , data = panel , listw = macierz_q1_2 , model = "random" , effect = "individual" , lag = FALSE , spatial.error = "b")
+summary(sem_re1)
+```
+
+```{r}
+# test Hausmana
+sphtest(sem_re1, sem_fe1)
+sphtest(sar_re1, sar_fe1)
+```
+# testy ex-ante dla modeli przestrzennych
+```{r}
+#slmtest(rownanie1, data=panel, listw=macierz_q1_2, model="within",test=c("lme","lml","rlme","rlml"), index=NULL)
+slmtest(rownanie1, data=panel, listw=macierz_q1_2, model="within",test=c("lme"), index=NULL)
+slmtest(rownanie1, data=panel, listw=macierz_q1_2, model="within",test=c("lml"), index=NULL)
+slmtest(rownanie1, data=panel, listw=macierz_q1_2, model="within",test=c("rlme"), index=NULL)
+slmtest(rownanie1, data=panel, listw=macierz_q1_2, model="within",test=c("rlml"), index=NULL)
+```
+
+```{r}
+#slmtest(rownanie1, data=panel, listw=macierz_q1, model="random",test=c("lme","lml","rlme","rlml"), index=NULL)
+slmtest(rownanie1, data=panel, listw=macierz_q1_2, model="random",test=c("lme"), index=NULL)
+slmtest(rownanie1, data=panel, listw=macierz_q1_2, model="random",test=c("lml"), index=NULL)
+slmtest(rownanie1, data=panel, listw=macierz_q1_2, model="random",test=c("rlme"), index=NULL)
+slmtest(rownanie1, data=panel, listw=macierz_q1_2, model="random",test=c("rlml"), index=NULL)
+```
+
 
